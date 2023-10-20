@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : NetworkBehaviour
 {
-    public GameObject Card;
-    private GameObject Hand;
+    
+
+    public override void OnNetworkSpawn()
+    {
+        
+    }
 
     private void Start()
     {
-        Hand = GameObject.Find("Player Hand");
-        for (int i = 0; i < 5; i++)
-        { 
-            Instantiate(Card,Hand.transform);
-        }
+
     }
 }

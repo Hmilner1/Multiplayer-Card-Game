@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Unity.Netcode;
+using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 
 public class CardMovement : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -18,7 +20,7 @@ public class CardMovement : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     public void OnBeginDrag(PointerEventData eventData)
     {
         parentAfterDrag = this.transform.parent;
-        this.transform.SetParent(this.transform.parent.parent);
+        this.transform.SetParent(this.transform.parent.parent,true);
         image.raycastTarget = false;
     }
 
@@ -29,7 +31,7 @@ public class CardMovement : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        this.transform.SetParent(parentAfterDrag);
+        this.transform.SetParent(parentAfterDrag,true);
         image.raycastTarget = true;
     }
 }
