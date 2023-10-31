@@ -431,11 +431,10 @@
 -analyzer:"D:/Unity/2022.3.4f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
 -analyzer:"D:/Unity/2022.3.4f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Packages/ParrelSync/Examples/CustomArgumentExample.cs"
-"Assets/Scripts/Cards/Movement/CardMovement.cs"
-"Assets/Scripts/Cards/Movement/ZoneMovementHandler.cs"
-"Assets/Scripts/Managers/PlayerManager.cs"
-"Assets/Scripts/Player/TestMovement.cs"
-"Assets/Scripts/Player/TestPlayerColour.cs"
+"Assets/Scripts/Player/PlayerSetupManager.cs"
+"Assets/Scripts/Player/Projectile.cs"
+"Assets/Scripts/Player/SpawnManager.cs"
+"Assets/Scripts/Player/TestPlayerFire.cs"
 "Assets/Scripts/UI/NetworkDebugGui.cs"
 -langversion:9.0
 
