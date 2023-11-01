@@ -435,6 +435,7 @@
 "Assets/Scripts/Player/Projectile.cs"
 "Assets/Scripts/Player/SpawnManager.cs"
 "Assets/Scripts/Player/TestPlayerFire.cs"
+"Assets/Scripts/UI/Camera/MainCamMovement.cs"
 "Assets/Scripts/UI/NetworkDebugGui.cs"
 -langversion:9.0
 

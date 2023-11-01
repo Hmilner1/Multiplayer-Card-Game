@@ -10,10 +10,12 @@ public class SpawnManager : NetworkBehaviour
     public NetworkObject playerPrefab;
     private IReadOnlyList<NetworkClient> players;
     private bool playersSpawned;
+    private GameObject mainCam;
 
     public override void OnNetworkSpawn()
     {
         playersSpawned = false;
+        mainCam = GameObject.Find("MainCamera");
     }
 
     private void Update()
@@ -39,10 +41,20 @@ public class SpawnManager : NetworkBehaviour
                     playerObject.GetComponent<NetworkObject>().ChangeOwnership(players[i].ClientId);
                 }
                 playersSpawned = true;
+                DisableMainCamServerRpc();
             }
         }
     }
 
-    
+    [ServerRpc]
+    private void DisableMainCamServerRpc()
+    {
+        DisableMainCamClientRpc();
+    }
 
+    [ClientRpc]
+    private void DisableMainCamClientRpc()
+    {
+        Destroy(mainCam);
+    }
 }
