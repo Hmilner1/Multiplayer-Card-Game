@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEditor.PackageManager;
+using System;
 
 public class SpawnManager : NetworkBehaviour
 {
@@ -39,6 +40,14 @@ public class SpawnManager : NetworkBehaviour
                     var playerObject = Instantiate(playerPrefab, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation);
                     playerObject.Spawn();
                     playerObject.GetComponent<NetworkObject>().ChangeOwnership(players[i].ClientId);
+                    if (i == 0)
+                    {
+                        playerObject.name = "1";
+                    }
+                    else
+                    {
+                        playerObject.name = "2";
+                    }
                 }
                 playersSpawned = true;
                 DisableMainCamServerRpc();
