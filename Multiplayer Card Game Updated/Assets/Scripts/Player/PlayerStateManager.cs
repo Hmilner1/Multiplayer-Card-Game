@@ -6,6 +6,8 @@ using System.Net.NetworkInformation;
 
 public class PlayerStateManager : NetworkBehaviour
 {
+    private Camera playerCam;
+
     public enum playerState
     { 
         selecting,
@@ -50,6 +52,7 @@ public class PlayerStateManager : NetworkBehaviour
             enabled = false;
         }
         currentState = playerState.selecting;
+        playerCam = GetComponentInChildren<Camera>();
     }
 
     private void CardClicked()
@@ -69,6 +72,14 @@ public class PlayerStateManager : NetworkBehaviour
 
     private void Firing()
     {
-        
+        Vector3 FirePoint = new Vector3(0,0,0);
+       
+        if (Input.GetMouseButton(0))
+        {
+            FirePoint = Input.mousePosition;
+            FirePoint.z = playerCam.nearClipPlane;
+            FirePoint = playerCam.ScreenToWorldPoint(FirePoint);
+            Debug.Log(FirePoint.x + " , " + FirePoint.y);
+        }
     }
 }
