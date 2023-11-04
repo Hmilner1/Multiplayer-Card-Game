@@ -433,10 +433,12 @@
 "Assets/Packages/ParrelSync/Examples/CustomArgumentExample.cs"
 "Assets/Scripts/Cards/CardDispenser.cs"
 "Assets/Scripts/Player/PlayerSetupManager.cs"
+"Assets/Scripts/Player/PlayerStateManager.cs"
 "Assets/Scripts/Player/Projectile.cs"
 "Assets/Scripts/Player/SpawnManager.cs"
 "Assets/Scripts/Player/TestPlayerFire.cs"
 "Assets/Scripts/UI/Camera/MainCamMovement.cs"
+"Assets/Scripts/UI/HandUIController.cs"
 "Assets/Scripts/UI/NetworkDebugGui.cs"
 "Assets/Scripts/UI/UIController.cs"
 -langversion:9.0
