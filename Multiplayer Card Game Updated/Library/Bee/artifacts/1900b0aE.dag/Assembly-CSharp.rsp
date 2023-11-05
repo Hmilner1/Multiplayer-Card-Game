@@ -432,6 +432,7 @@
 -analyzer:"D:/Unity/2022.3.4f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/Packages/ParrelSync/Examples/CustomArgumentExample.cs"
 "Assets/Scripts/Cards/CardDispenser.cs"
+"Assets/Scripts/Cards/Movement/CardSpawn.cs"
 "Assets/Scripts/Player/PlayerSetupManager.cs"
 "Assets/Scripts/Player/PlayerStateManager.cs"
 "Assets/Scripts/Player/Projectile.cs"

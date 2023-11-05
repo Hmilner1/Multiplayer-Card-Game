@@ -37,9 +37,17 @@ public class HandUIController : MonoBehaviour
 
     public void OnClickedCard()
     {
+        GameObject HandPanel = this.gameObject;
         if (playerStateManager.currentState == PlayerStateManager.playerState.selecting)
         {
-            OnCardClicked?.Invoke();
+            HandPanel.transform.position = HandPanel.transform.position + new Vector3(0, 200, 0);
+            StartCoroutine(SelectionPause());
         }
+    }
+
+    IEnumerator SelectionPause()
+    {
+        yield return new WaitForSeconds(0.2f);
+        OnCardClicked?.Invoke();
     }
 }

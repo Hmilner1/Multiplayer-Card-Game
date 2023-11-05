@@ -402,7 +402,6 @@ GameObject:
   - component: {fileID: 7074503321616899754}
   - component: {fileID: 2212627912509117168}
   - component: {fileID: 495646068913456001}
-  - component: {fileID: 558981943944125127}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -475,27 +474,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &558981943944125127
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3371764074489851892}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3953102683227315943
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,6 +828,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f76559e6ca171449b7ab10ce3b34eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardSpawnPoint: {fileID: 4225638902328479063}
+  cardToSpawn: {fileID: 1623973245752401690, guid: f69093c72a987ef4082ca55cd6046898, type: 3}
+  cardSpeed: 10000
   currentState: 0
 --- !u!114 &5758215796670503509
 MonoBehaviour:
