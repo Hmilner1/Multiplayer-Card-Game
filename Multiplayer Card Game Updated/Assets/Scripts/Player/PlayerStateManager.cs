@@ -26,13 +26,13 @@ public class PlayerStateManager : NetworkBehaviour
 
     private void OnEnable()
     {
-        HandUIController.OnCardClicked += CardClicked;
+        //HandUIController.OnCardClicked += CardClicked;
         PlayerSetupManager.OnPlayerSetUp += PlayerSpawn;
     }
 
     private void OnDisable()
     {
-        HandUIController.OnCardClicked -= CardClicked;
+        //HandUIController.OnCardClicked -= CardClicked;
         PlayerSetupManager.OnPlayerSetUp += PlayerSpawn;
     }
 
@@ -60,11 +60,11 @@ public class PlayerStateManager : NetworkBehaviour
         playerCam = GetComponentInChildren<Camera>();
     }
 
-    private void CardClicked()
-    {
-        if (!IsOwner) return;
-        currentState = playerState.firing;
-    }
+    //private void CardClicked()
+    //{
+    //    if (!IsOwner) return;
+    //    currentState = playerState.firing;
+    //}
 
     private void Idle()
     {
@@ -117,6 +117,7 @@ public class PlayerStateManager : NetworkBehaviour
     {
         var Card = Instantiate(cardToSpawn, cardSpawnPoint.transform.position, cardSpawnPoint.transform.rotation);
         Card.Init(dir * cardSpeed);
+        currentState = playerState.selecting;
     }
 
 }

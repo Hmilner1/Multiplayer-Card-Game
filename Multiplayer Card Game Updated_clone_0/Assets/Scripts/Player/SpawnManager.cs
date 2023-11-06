@@ -39,7 +39,10 @@ public class SpawnManager : NetworkBehaviour
                     int spawnIndex = i % spawnPoints.Count;
                     var playerObject = Instantiate(playerPrefab, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation);
                     playerObject.Spawn();
-                    playerObject.GetComponent<NetworkObject>().ChangeOwnership(players[i].ClientId);
+                    if (i == 1)
+                    {
+                        playerObject.GetComponent<NetworkObject>().ChangeOwnership(players[i].ClientId);
+                    }
                 }
                 playersSpawned = true;
                 DisableMainCamServerRpc();
