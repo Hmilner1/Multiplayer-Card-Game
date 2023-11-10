@@ -27,6 +27,4 @@ public class PlayerSetupManager : NetworkBehaviour
         }
         OnPlayerSetUp?.Invoke();
     }
-
-
 }

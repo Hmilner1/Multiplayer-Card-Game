@@ -5,11 +5,6 @@ using UnityEngine.UI;
 
 public class HandUIController : MonoBehaviour
 {
-    #region Events
-    public delegate void CardClicked();
-    public static event CardClicked OnCardClicked;
-    #endregion
-
     private PlayerStateManager playerStateManager;
 
     private void Start()
@@ -47,7 +42,6 @@ public class HandUIController : MonoBehaviour
             LeanTween.moveLocal(HandPanel, new Vector3(0, 200, 0), 0.2f).setEase(LeanTweenType.easeInOutCubic);
             StartCoroutine(SelectionPause());
         }
-
         if (playerStateManager.currentState == PlayerStateManager.playerState.firing)
         {
             LeanTween.scale(HandPanel, new Vector3(1.2f, 1.2f, 1.2f), .1f).setEase(LeanTweenType.easeOutElastic);
@@ -58,7 +52,6 @@ public class HandUIController : MonoBehaviour
     IEnumerator SelectionPause()
     {
         yield return new WaitForSeconds(0.1f);
-        //OnCardClicked?.Invoke();
         playerStateManager.currentState = PlayerStateManager.playerState.firing;
     }
     IEnumerator FirePause(GameObject card)

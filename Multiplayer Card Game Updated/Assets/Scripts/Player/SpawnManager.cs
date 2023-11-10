@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-using UnityEditor.PackageManager;
 using System;
 
 public class SpawnManager : NetworkBehaviour
@@ -14,7 +13,7 @@ public class SpawnManager : NetworkBehaviour
     private GameObject mainCam;
 
     public override void OnNetworkSpawn()
-    {
+    { 
         playersSpawned = false;
         mainCam = GameObject.Find("MainCamera");
     }

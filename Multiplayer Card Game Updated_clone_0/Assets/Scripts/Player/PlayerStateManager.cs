@@ -13,6 +13,8 @@ public class PlayerStateManager : NetworkBehaviour
     private CardSpawn cardToSpawn;
     [SerializeField]
     private int cardSpeed = 2000;
+    private HandUIController uiController;
+
 
 
     public enum playerState
@@ -26,14 +28,21 @@ public class PlayerStateManager : NetworkBehaviour
 
     private void OnEnable()
     {
-        //HandUIController.OnCardClicked += CardClicked;
         PlayerSetupManager.OnPlayerSetUp += PlayerSpawn;
     }
 
     private void OnDisable()
     {
-        //HandUIController.OnCardClicked -= CardClicked;
         PlayerSetupManager.OnPlayerSetUp += PlayerSpawn;
+    }
+
+    private void Start()
+    {
+        if (IsOwner)
+        {
+            DisableMatchMakingServerRpc();
+        }
+        uiController = GetComponentInParent<HandUIController>();
     }
 
     private void Update()
@@ -60,12 +69,6 @@ public class PlayerStateManager : NetworkBehaviour
         playerCam = GetComponentInChildren<Camera>();
     }
 
-    //private void CardClicked()
-    //{
-    //    if (!IsOwner) return;
-    //    currentState = playerState.firing;
-    //}
-
     private void Idle()
     {
         if (!IsOwner) return;
@@ -80,9 +83,9 @@ public class PlayerStateManager : NetworkBehaviour
     private void Firing()
     {
         if (!IsOwner) return;
+        var FirePoint = new Vector3(0, 0, 0);
         if (Input.GetMouseButton(0))
         {
-            var FirePoint = new Vector3(0, 0, 0);
             FirePoint = Input.mousePosition;
             FirePoint.z = playerCam.nearClipPlane;
             FirePoint = playerCam.ScreenToWorldPoint(FirePoint);
@@ -118,6 +121,22 @@ public class PlayerStateManager : NetworkBehaviour
         var Card = Instantiate(cardToSpawn, cardSpawnPoint.transform.position, cardSpawnPoint.transform.rotation);
         Card.Init(dir * cardSpeed);
         currentState = playerState.selecting;
+    }
+
+    [ServerRpc]
+    private void DisableMatchMakingServerRpc()
+    {
+        DisableMatchMakingClientRpc();
+    }
+
+    [ClientRpc]
+    private void DisableMatchMakingClientRpc()
+    {
+        var Menu = GameObject.Find("MatchMakingCanvas");
+        if (Menu != null)
+        {
+            Menu.SetActive(false);
+        }
     }
 
 }
