@@ -25,14 +25,14 @@ public class SceneMan : MonoBehaviour
         SceneManager.LoadScene(SceneIndex);
     }
 
-    public void LoadMatchMaking()
+    public void LoadMatchMakingScene(int MatchMakingSceneIndex)
     { 
-        SceneManager.LoadScene(2);
-        SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+        SceneManager.LoadScene(3);
+        SceneManager.LoadSceneAsync(MatchMakingSceneIndex, LoadSceneMode.Additive);
     }
 
-    public void UnloadMatchMaking()
+    public void UnloadMatchMaking(int MatchMakingSceneIndex)
     {
-        SceneManager.UnloadSceneAsync(1);
+        SceneManager.UnloadSceneAsync(MatchMakingSceneIndex);
     }
 }

@@ -489,10 +489,11 @@
 "Assets/Scripts/Player/TestPlayerFire.cs"
 "Assets/Scripts/UI/Camera/MainCamMovement.cs"
 "Assets/Scripts/UI/HandUIController.cs"
-"Assets/Scripts/UI/MainMenu/MainUIPlay.cs"
+"Assets/Scripts/UI/MainMenu/MainUIMatchMake.cs"
 "Assets/Scripts/UI/MenuUIScroller.cs"
 "Assets/Scripts/UI/NetworkDebugGui.cs"
-"Assets/Scripts/UI/UIController.cs"
+"Assets/Scripts/UI/PrivateMatchMaker.cs"
+"Assets/Scripts/UI/PrivateMatchUIManager.cs"
 -langversion:9.0
 
 /deterministic

@@ -13,10 +13,7 @@ public class PlayerStateManager : NetworkBehaviour
     private CardSpawn cardToSpawn;
     [SerializeField]
     private int cardSpeed = 2000;
-    private HandUIController uiController;
-
-
-
+   
     public enum playerState
     { 
         selecting,
@@ -41,8 +38,8 @@ public class PlayerStateManager : NetworkBehaviour
         if (IsOwner)
         {
             DisableMatchMakingServerRpc();
+            DisablePrivateMatchMakingServerRpc();
         }
-        uiController = GetComponentInParent<HandUIController>();
     }
 
     private void Update()
@@ -133,6 +130,22 @@ public class PlayerStateManager : NetworkBehaviour
     private void DisableMatchMakingClientRpc()
     {
         var Menu = GameObject.Find("MatchMakingCanvas");
+        if (Menu != null)
+        {
+            Menu.SetActive(false);
+        }
+    }
+
+    [ServerRpc]
+    private void DisablePrivateMatchMakingServerRpc()
+    {
+        DisablePrivateMatchMakingClientRpc();
+    }
+
+    [ClientRpc]
+    private void DisablePrivateMatchMakingClientRpc()
+    {
+        var Menu = GameObject.Find("PrivateMatchCanvas");
         if (Menu != null)
         {
             Menu.SetActive(false);
