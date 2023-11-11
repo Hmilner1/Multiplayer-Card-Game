@@ -30,21 +30,23 @@ public class SpawnManager : NetworkBehaviour
         if (IsServer)
         {
             players = NetworkManager.Singleton.ConnectedClientsList;
-
-            if (players.Count == 2)
+            if (players != null)
             {
-                for (int i = 0; i < players.Count; i++)
+                if (players.Count == 2)
                 {
-                    int spawnIndex = i % spawnPoints.Count;
-                    var playerObject = Instantiate(playerPrefab, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation);
-                    playerObject.Spawn();
-                    if (i == 1)
+                    for (int i = 0; i < players.Count; i++)
                     {
-                        playerObject.GetComponent<NetworkObject>().ChangeOwnership(players[i].ClientId);
+                        int spawnIndex = i % spawnPoints.Count;
+                        var playerObject = Instantiate(playerPrefab, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation);
+                        playerObject.Spawn();
+                        if (i == 1)
+                        {
+                            playerObject.GetComponent<NetworkObject>().ChangeOwnership(players[i].ClientId);
+                        }
                     }
+                    playersSpawned = true;
+                    DisableMainCamServerRpc();
                 }
-                playersSpawned = true;
-                DisableMainCamServerRpc();
             }
         }
     }

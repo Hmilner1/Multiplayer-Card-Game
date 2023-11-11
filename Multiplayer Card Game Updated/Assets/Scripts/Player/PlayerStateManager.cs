@@ -13,6 +13,8 @@ public class PlayerStateManager : NetworkBehaviour
     private CardSpawn cardToSpawn;
     [SerializeField]
     private int cardSpeed = 2000;
+    [SerializeField]
+    Canvas handCanvas;
    
     public enum playerState
     { 
@@ -80,13 +82,12 @@ public class PlayerStateManager : NetworkBehaviour
     private void Firing()
     {
         if (!IsOwner) return;
-        var FirePoint = new Vector3(0, 0, 0);
+        var FirePoint = new Vector2(0, 0);
         if (Input.GetMouseButton(0))
         {
-            FirePoint = Input.mousePosition;
-            FirePoint.z = playerCam.nearClipPlane;
-            FirePoint = playerCam.ScreenToWorldPoint(FirePoint);
-            Debug.Log(FirePoint.x + " , " + FirePoint.y);
+            Vector2 MousePos = Input.mousePosition;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)handCanvas.transform, MousePos, null, out FirePoint);
+            Debug.Log(FirePoint);
         }
 
         if (Input.GetMouseButtonUp(0))

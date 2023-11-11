@@ -1,4 +1,3 @@
-using ParrelSync;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,6 +8,9 @@ using Unity.Services.Core;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+#if UNITY_EDITOR
+using ParrelSync;
+#endif
 
 public class PrivateMatchMaker : MonoBehaviour
 {
@@ -24,23 +26,21 @@ public class PrivateMatchMaker : MonoBehaviour
     {
         networkManagerTransport = GameObject.FindAnyObjectByType<UnityTransport>();
 
-
         await AuthenticatePlayer();
     }
 
-    private static async Task AuthenticatePlayer()
+    private async Task AuthenticatePlayer()
     {
-        var options = new InitializationOptions();
+        InitializationOptions initOptions = new InitializationOptions();
 
 #if UNITY_EDITOR
-        // Remove this if you don't have ParrelSync installed. 
-        // It's used to differentiate the clients, otherwise lobby will count them as the same
-        options.SetProfile(ClonesManager.IsClone() ? ClonesManager.GetArgument() : "Primary");
+        initOptions.SetProfile(ClonesManager.IsClone() ? ClonesManager.GetArgument() : "Primary");
 #endif
-
-        await UnityServices.InitializeAsync(options);
-
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        await UnityServices.InitializeAsync(initOptions);
+        if (!AuthenticationService.Instance.IsSignedIn)
+        {
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
     }
 
     public async void OnHostGame()
@@ -66,7 +66,5 @@ public class PrivateMatchMaker : MonoBehaviour
 
         NetworkManager.Singleton.StartClient();
         SceneMan.Instance.UnloadMatchMaking(2);
-
-
     }
 }

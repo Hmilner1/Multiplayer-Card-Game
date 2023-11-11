@@ -11,6 +11,7 @@ using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+using UnityEngine.UI;
 
 #if UNITY_EDITOR
 using ParrelSync;
@@ -18,62 +19,83 @@ using ParrelSync;
 
 public class MainUIMatchMake : MonoBehaviour
 {
-    private Lobby _connectedLobby;
-    private UnityTransport _transport;
-    private const string JoinCodeKey = "j";
-    private string _playerId;
+    public Lobby currentLobby;
+    private UnityTransport networkManagerTransport;
+    private const string JoinCodeKey = "code";
+    private string currentPlayerId;
 
-    private void Awake() => _transport = FindObjectOfType<UnityTransport>();
+    private void Awake()
+    {
+        networkManagerTransport = FindObjectOfType<UnityTransport>();
+    }
 
     private void Start()
     {
-        CreateOrJoinLobby();
+        BasicMatchMake();
     }
 
-    public async void CreateOrJoinLobby()
-    {
-        await Authenticate();
-
-        _connectedLobby = await QuickJoinLobby() ?? await CreateLobby();
-    }
-
-    private async Task Authenticate()
-    {
-        var options = new InitializationOptions();
-
-#if UNITY_EDITOR
-        // Remove this if you don't have ParrelSync installed. 
-        // It's used to differentiate the clients, otherwise lobby will count them as the same
-        options.SetProfile(ClonesManager.IsClone() ? ClonesManager.GetArgument() : "Primary");
-#endif
-
-        await UnityServices.InitializeAsync(options);
-
-        await AuthenticationService.Instance.SignInAnonymouslyAsync();
-        _playerId = AuthenticationService.Instance.PlayerId;
-    }
-
-    private async Task<Lobby> QuickJoinLobby()
+    private void OnDestroy()
     {
         try
         {
-            // Attempt to join a lobby in progress
-            var lobby = await Lobbies.Instance.QuickJoinLobbyAsync();
+            StopAllCoroutines();
+            if (currentLobby != null)
+            {
+                Lobbies.Instance.DeleteLobbyAsync(currentLobby.Id);
+            }
+        }
+        catch (Exception exception)
+        {
+            Debug.Log("Error shutting down lobby: " + exception.ToString());
+        }
+    }
 
-            // If we found one, grab the relay allocation details
-            var a = await RelayService.Instance.JoinAllocationAsync(lobby.Data[JoinCodeKey].Value);
+    public async void BasicMatchMake()
+    {
+        await AuthenticatePlayer();
 
-            // Set the details to the transform
-            SetTransformAsClient(a);
+        if (await JoinLobby() != null)
+        {
+            currentLobby = await JoinLobby();
+        }
+        else
+        {
+            currentLobby = await CreateLobby();
+        }
+    }
 
-            // Join the game room as a client
+    private async Task AuthenticatePlayer()
+    {
+        InitializationOptions initOptions = new InitializationOptions();
+
+#if UNITY_EDITOR
+        initOptions.SetProfile(ClonesManager.IsClone() ? ClonesManager.GetArgument() : "MainEditor");
+#endif
+        await UnityServices.InitializeAsync(initOptions);
+        if (!AuthenticationService.Instance.IsSignedIn)
+        {
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
+        currentPlayerId = AuthenticationService.Instance.PlayerId;
+    }
+
+    private async Task<Lobby> JoinLobby()
+    {
+        try
+        {
+            Lobby lobby = await Lobbies.Instance.QuickJoinLobbyAsync();
+
+            JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(lobby.Data[JoinCodeKey].Value);
+
+            networkManagerTransport.SetClientRelayData(allocation.RelayServer.IpV4, (ushort)allocation.RelayServer.Port, allocation.AllocationIdBytes, allocation.Key, allocation.ConnectionData, allocation.HostConnectionData);
+
             NetworkManager.Singleton.StartClient();
             SceneMan.Instance.UnloadMatchMaking(1);
             return lobby;
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
-            Debug.Log($"No lobbies available via quick join");
+            Debug.Log("No lobbies open to join: " + exception.ToString());
             return null;
         }
     }
@@ -82,44 +104,35 @@ public class MainUIMatchMake : MonoBehaviour
     {
         try
         {
-            const int maxPlayers = 2;
+            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(2);
+            string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
-            // Create a relay allocation and generate a join code to share with the lobby
-            var a = await RelayService.Instance.CreateAllocationAsync(maxPlayers);
-            var joinCode = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);
-
-            // Create a lobby, adding the relay join code to the lobby data
-            var options = new CreateLobbyOptions
+            CreateLobbyOptions options = new CreateLobbyOptions
             {
                 Data = new Dictionary<string, DataObject> { { JoinCodeKey, new DataObject(DataObject.VisibilityOptions.Public, joinCode) } }
             };
-            var lobby = await Lobbies.Instance.CreateLobbyAsync("Useless Lobby Name", maxPlayers, options);
+            Lobby lobby = await Lobbies.Instance.CreateLobbyAsync("Unranked Lobby", 2, options);
 
-            // Send a heartbeat every 15 seconds to keep the room alive
-            StartCoroutine(HeartbeatLobbyCoroutine(lobby.Id, 15));
+            networkManagerTransport.SetHostRelayData(allocation.RelayServer.IpV4, (ushort)allocation.RelayServer.Port, allocation.AllocationIdBytes, allocation.Key, allocation.ConnectionData);
 
-            // Set the game room to use the relay allocation
-            _transport.SetHostRelayData(a.RelayServer.IpV4, (ushort)a.RelayServer.Port, a.AllocationIdBytes, a.Key, a.ConnectionData);
+            StartCoroutine(PingLobby(lobby.Id, 15));
 
-            // Start the room. I'm doing this immediately, but maybe you want to wait for the lobby to fill up
             NetworkManager.Singleton.StartHost();
+
+            Button backButton = GameObject.Find("BackButton").GetComponent<Button>();
+            backButton.interactable= true;
             return lobby;
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
-            Debug.LogFormat("Failed creating a lobby");
+            Debug.LogFormat("Lobby Failed" + exception.ToString());
             return null;
         }
     }
 
-    private void SetTransformAsClient(JoinAllocation a)
+    private static IEnumerator PingLobby(string lobbyId, float pingLobbyTime)
     {
-        _transport.SetClientRelayData(a.RelayServer.IpV4, (ushort)a.RelayServer.Port, a.AllocationIdBytes, a.Key, a.ConnectionData, a.HostConnectionData);
-    }
-
-    private static IEnumerator HeartbeatLobbyCoroutine(string lobbyId, float waitTimeSeconds)
-    {
-        var delay = new WaitForSecondsRealtime(waitTimeSeconds);
+        WaitForSecondsRealtime delay = new WaitForSecondsRealtime(pingLobbyTime);
         while (true)
         {
             Lobbies.Instance.SendHeartbeatPingAsync(lobbyId);

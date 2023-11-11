@@ -5,6 +5,7 @@ using Unity.Netcode;
 
 public class NetworkDebugGui : MonoBehaviour
 {
+#if UNITY_EDITOR
     private void OnGUI()
     {
         GUILayout.BeginArea(new Rect(16,16,300,300));
@@ -15,4 +16,5 @@ public class NetworkDebugGui : MonoBehaviour
         }
         GUILayout.EndArea();
     }
+#endif
 }
