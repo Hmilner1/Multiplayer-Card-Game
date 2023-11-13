@@ -6,15 +6,21 @@ using UnityEngine.UI;
 public class HandUIController : MonoBehaviour
 {
     private PlayerStateManager playerStateManager;
+    public GameObject HandPanel;
 
     private void Start()
     {
         playerStateManager = GetComponentInParent<PlayerStateManager>();
     }
 
+    private void Update()
+    {
+        
+    }
+
     public void OnMouseOverHand()
-    { 
-        GameObject HandPanel = this.gameObject;
+    {
+        HandPanel = this.gameObject;
         if (playerStateManager.currentState == PlayerStateManager.playerState.selecting)
         {
             HandPanel.transform.position = HandPanel.transform.position + new Vector3(0, 100, 0);
@@ -25,7 +31,7 @@ public class HandUIController : MonoBehaviour
 
     public void OnMouseExitHand()
     {
-        GameObject HandPanel = this.gameObject;
+        HandPanel = this.gameObject;
         if (playerStateManager.currentState == PlayerStateManager.playerState.selecting)
         {
             HandPanel.transform.position = HandPanel.transform.position - new Vector3(0, 100, 0);
@@ -36,12 +42,16 @@ public class HandUIController : MonoBehaviour
 
     public void OnClickedCard()
     {
-        GameObject HandPanel = this.gameObject;
+        HandPanel = this.gameObject;
         if (playerStateManager.currentState == PlayerStateManager.playerState.selecting)
         {
-            LeanTween.moveLocal(HandPanel, new Vector3(0, 200, 0), 0.2f).setEase(LeanTweenType.easeInOutCubic);
+            LeanTween.moveLocal(HandPanel, new Vector3(0, 300, 0), 0.2f).setEase(LeanTweenType.easeInOutCubic);
             StartCoroutine(SelectionPause());
         }
+    }
+
+    public void OnCLickFire()
+    {
         if (playerStateManager.currentState == PlayerStateManager.playerState.firing)
         {
             LeanTween.scale(HandPanel, new Vector3(1.2f, 1.2f, 1.2f), .1f).setEase(LeanTweenType.easeOutElastic);
@@ -53,6 +63,7 @@ public class HandUIController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         playerStateManager.currentState = PlayerStateManager.playerState.firing;
+        playerStateManager.handUIController = this;
     }
     IEnumerator FirePause(GameObject card)
     {

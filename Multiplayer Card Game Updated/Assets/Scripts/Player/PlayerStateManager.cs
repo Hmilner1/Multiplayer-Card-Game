@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-using System.Net.NetworkInformation;
 
 public class PlayerStateManager : NetworkBehaviour
 {
+    [SerializeField]
     private Camera playerCam;
     [SerializeField]
     private GameObject cardSpawnPoint;
@@ -15,7 +15,11 @@ public class PlayerStateManager : NetworkBehaviour
     private int cardSpeed = 2000;
     [SerializeField]
     Canvas handCanvas;
-   
+    [SerializeField]
+    private LineRenderer lineRenderer;
+    private Vector2 FirePoint;
+    public HandUIController handUIController;
+
     public enum playerState
     { 
         selecting,
@@ -42,6 +46,7 @@ public class PlayerStateManager : NetworkBehaviour
             DisableMatchMakingServerRpc();
             DisablePrivateMatchMakingServerRpc();
         }
+        lineRenderer.enabled = false;
     }
 
     private void Update()
@@ -65,7 +70,6 @@ public class PlayerStateManager : NetworkBehaviour
     {
         if (!IsOwner) return;
         currentState = playerState.selecting;
-        playerCam = GetComponentInChildren<Camera>();
     }
 
     private void Idle()
@@ -82,21 +86,63 @@ public class PlayerStateManager : NetworkBehaviour
     private void Firing()
     {
         if (!IsOwner) return;
-        var FirePoint = new Vector2(0, 0);
         if (Input.GetMouseButton(0))
         {
-            Vector2 MousePos = Input.mousePosition;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)handCanvas.transform, MousePos, null, out FirePoint);
-            Debug.Log(FirePoint);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)handCanvas.transform, Input.mousePosition, null, out FirePoint);
+            DrawFireLineRender();
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            var dir = transform.forward;
-            FireServerRpc(dir);
 
-            Fire(dir);
+            lineRenderer.enabled = false;
+
+            FireServerRpc(CalculateFireForce());
+            Fire(CalculateFireForce());
+
+            EndFireState();
         }
+    }
+
+    private void DrawFireLineRender()
+    {
+        lineRenderer.enabled = true;
+
+        Vector3 LineMousePos = FirePoint / 100;
+        LineMousePos.y = LineMousePos.y + 3.5f;
+        LineMousePos.x = Mathf.Clamp(LineMousePos.x, -1, 1);
+        LineMousePos.y = Mathf.Clamp(LineMousePos.y, -1, 0.3f);
+
+        lineRenderer.SetPosition(0, new Vector3(0,0,1));
+        lineRenderer.SetPosition(1, new Vector3(LineMousePos.x,2, LineMousePos.y));
+    }
+
+    private Vector3 CalculateFireForce()
+    {
+        float distance = Vector3.Distance(Input.mousePosition, handUIController.HandPanel.transform.position);
+        Vector3 dir = new Vector3(0, 0, 0);
+        if (IsServer)
+        {
+            dir = new Vector3(-(FirePoint.x / 100), transform.forward.y, (transform.forward.z * distance) / 150);
+        }
+        else
+        {
+            dir = new Vector3((FirePoint.x / 100), transform.forward.y, (transform.forward.z * distance) / 150);
+
+        }
+        return dir;
+    }
+
+    private void Fire(Vector3 dir)
+    {
+        var Card = Instantiate(cardToSpawn, cardSpawnPoint.transform.position, cardSpawnPoint.transform.rotation);
+        Card.Init(dir * cardSpeed);
+    }
+
+    private void EndFireState()
+    {
+        handUIController.OnCLickFire();
+        currentState = playerState.selecting;
     }
 
     [ServerRpc]
@@ -112,13 +158,6 @@ public class PlayerStateManager : NetworkBehaviour
         {
             Fire(dir);
         }
-    }
-
-    private void Fire(Vector3 dir)
-    {
-        var Card = Instantiate(cardToSpawn, cardSpawnPoint.transform.position, cardSpawnPoint.transform.rotation);
-        Card.Init(dir * cardSpeed);
-        currentState = playerState.selecting;
     }
 
     [ServerRpc]

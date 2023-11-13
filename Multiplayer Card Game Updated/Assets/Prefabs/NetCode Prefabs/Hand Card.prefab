@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8204586643556354599}
   - component: {fileID: 8974418485412921633}
   - component: {fileID: 6149800295864909784}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,9 +87,9 @@ GameObject:
   - component: {fileID: 6807738768153989674}
   - component: {fileID: 195831413497957760}
   - component: {fileID: 4386298221691032738}
+  - component: {fileID: 4033702768436942697}
   - component: {fileID: 3113734427947429759}
-  - component: {fileID: 5996280350585811176}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Hand Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -155,6 +155,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4033702768436942697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3343762466246535929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a14cb868969eca74faad11df8c0bde77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HandPanel: {fileID: 0}
 --- !u!114 &3113734427947429759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,7 +185,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5996280350585811176}
+        - m_Target: {fileID: 4033702768436942697}
           m_TargetAssemblyTypeName: HandUIController, Assembly-CSharp
           m_MethodName: OnMouseOverHand
           m_Mode: 1
@@ -188,7 +201,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5996280350585811176}
+        - m_Target: {fileID: 4033702768436942697}
           m_TargetAssemblyTypeName: HandUIController, Assembly-CSharp
           m_MethodName: OnMouseExitHand
           m_Mode: 1
@@ -204,7 +217,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5996280350585811176}
+        - m_Target: {fileID: 4033702768436942697}
           m_TargetAssemblyTypeName: HandUIController, Assembly-CSharp
           m_MethodName: OnClickedCard
           m_Mode: 1
@@ -216,15 +229,3 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
---- !u!114 &5996280350585811176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3343762466246535929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a14cb868969eca74faad11df8c0bde77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
