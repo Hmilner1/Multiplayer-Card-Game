@@ -8,9 +8,20 @@ public class CardDispenser : MonoBehaviour
     private GameObject playerHand;
     [SerializeField]
     private GameObject Card;
+    private int handSize;
 
-    public void OnClickDrawCard()
+    public void OnClickDrawCard(int CardsToAdd)
     {
-        Instantiate(Card, playerHand.transform);
+        handSize = 0;
+
+        foreach (var card in GameObject.FindGameObjectsWithTag("Card"))
+        {
+            handSize++;
+        }
+
+        if (handSize < 7)
+        {
+            Instantiate(Card, playerHand.transform);
+        }
     }
 }

@@ -25,8 +25,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2779495008277117392}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.01, y: 0.51, z: 0.408}
-  m_LocalScale: {x: 0.65, y: 0.46, z: 0}
+  m_LocalPosition: {x: 0.005, y: 0.51, z: 0.002}
+  m_LocalScale: {x: 0.4, y: 0.27, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 126774924552542706}
@@ -73,8 +73,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 67e86218752b9b240a04b89e29843785, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: a4c513cca80daf3489cb69647675f146, type: 3}
+  m_Color: {r: 0.3019608, g: 0.627451, b: 0.5058824, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -120,7 +120,7 @@ Transform:
   - {fileID: 3004473869070546029}
   - {fileID: 2971414551826402333}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1623973245752401690
 MonoBehaviour:
@@ -248,7 +248,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2971414551826402333
 Transform:
   m_ObjectHideFlags: 0
