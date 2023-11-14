@@ -481,6 +481,7 @@
 "Assets/Packages/ParrelSync/Examples/CustomArgumentExample.cs"
 "Assets/Scripts/Cards/CardDispenser.cs"
 "Assets/Scripts/Cards/Movement/CardSpawn.cs"
+"Assets/Scripts/Managers/GameManager.cs"
 "Assets/Scripts/Managers/SceneMan.cs"
 "Assets/Scripts/Player/PlayerSetupManager.cs"
 "Assets/Scripts/Player/PlayerStateManager.cs"

@@ -42,6 +42,7 @@ public class SpawnManager : NetworkBehaviour
                         if (i == 1)
                         {
                             playerObject.GetComponent<NetworkObject>().ChangeOwnership(players[i].ClientId);
+                            playerObject.GetComponent<PlayerStateManager>().currentTurnOrder = PlayerStateManager.playerTurnOrder.player2;
                         }
                     }
                     playersSpawned = true;

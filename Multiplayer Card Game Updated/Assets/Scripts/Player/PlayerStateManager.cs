@@ -27,7 +27,15 @@ public class PlayerStateManager : NetworkBehaviour
         idle
     }
 
+    public enum playerTurnOrder
+    {
+        player1,
+        player2
+    }
+
     public playerState currentState;
+    public playerTurnOrder currentTurnOrder;
+
 
     private void OnEnable()
     {
@@ -36,7 +44,7 @@ public class PlayerStateManager : NetworkBehaviour
 
     private void OnDisable()
     {
-        PlayerSetupManager.OnPlayerSetUp += PlayerSpawn;
+        PlayerSetupManager.OnPlayerSetUp -= PlayerSpawn;
     }
 
     private void Start()
