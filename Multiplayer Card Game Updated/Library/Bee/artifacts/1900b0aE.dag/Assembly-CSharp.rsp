@@ -487,6 +487,7 @@
 "Assets/Scripts/Player/PlayerStateManager.cs"
 "Assets/Scripts/Player/SpawnManager.cs"
 "Assets/Scripts/UI/Camera/MainCamMovement.cs"
+"Assets/Scripts/UI/GameTimerUI.cs"
 "Assets/Scripts/UI/HandUIController.cs"
 "Assets/Scripts/UI/MainMenu/MainUIMatchMake.cs"
 "Assets/Scripts/UI/MenuUIScroller.cs"

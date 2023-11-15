@@ -1,112 +1,127 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using Unity.Netcode;
-using UnityEngine.UI;
+using static PlayerStateManager;
 
 public class GameManager : NetworkBehaviour
 {
-    private float timeRemaining;
-    private bool timerStarted;
-    private bool player1Turn;
-    private bool player2Turn;
-    [SerializeField]
-    private float totalTime = 600f;
-    [SerializeField]
-    private TMP_Text gameTimer;
-    [SerializeField]
-    private Button endTurnButton;
+    public static GameManager Instance;
+    private GameObject Player1;
+    private GameObject Player2;
 
+    public enum GameState
+    { 
+        Start,
+        player1,
+        player2,
+        End
+    }
+    public GameState currentState;
 
     private void OnEnable()
     {
-        PlayerSetupManager.OnPlayerSetUp += TimerStart;
-        PlayerSetupManager.OnPlayerSetUp += PlayerTurnOrderSetUp;
-
+        GameTimerUI.OnTimerEnd += EndTimer;
     }
 
     private void OnDisable()
     {
-        PlayerSetupManager.OnPlayerSetUp -= TimerStart;
-        PlayerSetupManager.OnPlayerSetUp -= PlayerTurnOrderSetUp;
+        GameTimerUI.OnTimerEnd -= EndTimer;
     }
 
-    public override void OnNetworkSpawn()
+    void Awake()
     {
-        player1Turn = false;
-        player2Turn = false;
-        timerStarted = false;
-        timeRemaining = totalTime;
-    }
-
-    private void FixedUpdate()
-    {
-        if (timerStarted) { TimerCountDown(); }
-    }
-
-    private void PlayerTurnOrderSetUp()
-    {
-        SetTurnServerRpc();
-    }
-    private void TimerStart()
-    {
-        timerStarted = true;
-    }
-
-    private void TimerCountDown()
-    {
-        if (timeRemaining > 0f)
+        if (Instance == null)
         {
-            timeRemaining -= Time.deltaTime;
-            TimerUI();
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Debug.Log("Countdown reached zero!");
+            Destroy(gameObject);
         }
+
+        currentState= GameState.Start;
+
+        SetPlayerID();
     }
 
-    private void TimerUI()
+    private void Update()
     {
+        if (!IsServer) return;
+        switch (currentState)
         {
-            int minutes = Mathf.FloorToInt(timeRemaining / 60f);
-            int seconds = Mathf.FloorToInt(timeRemaining % 60f);
-            string timeString = ( minutes + ":" + seconds);
-
-            gameTimer.text = timeString;
+            case GameState.Start:
+                StartingPhase();
+                break;
+            case GameState.player1:
+                
+                break;
+            case GameState.player2:
+                
+                break;
+            case GameState.End:
+                EndPhase();
+                break;
         }
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void InitialSetTurnServerRpc()
+    private void SetPlayerID()
     {
-        InitialSetTurnClientRpc();
+        PlayerStateManager[] playerManagers = GameObject.FindObjectsOfType<PlayerStateManager>();
+        foreach (var playerManager in playerManagers)
+        { 
+            var playerObject = playerManager.transform.gameObject;
+            var networkObj = playerObject.GetComponent<NetworkObject>();
+            if (networkObj.OwnerClientId == 0)
+            {
+                Player1 = playerObject;
+            }
+            else
+            { 
+                Player2 = playerObject;
+
+            }
+        }
+    }
+
+    private void EndTimer()
+    { 
+        currentState= GameState.End;
+    }
+
+    private void StartingPhase()
+    {
+        SetPlayerStateServerRpc();
+    }
+
+    private void EndPhase()
+    {
+        EndGameServerRpc();
+    }
+
+    [ServerRpc]
+    private void SetPlayerStateServerRpc()
+    {
+        SetPlayerStateClientRpc();
     }
 
     [ClientRpc]
-    private void InitialSetTurnClientRpc()
+    private void SetPlayerStateClientRpc()
     {
-        //PlayerStateManager[] playerManager = GameObject.FindObjectsOfType<PlayerStateManager>();
-        //foreach (PlayerStateManager playerStateManager in playerManager)
-        //{
-        //    playerStateManager.currentState = PlayerStateManager.playerState.idle;
-        //}
+        Player1.GetComponent<PlayerStateManager>().currentState = playerState.idle;
+        Player2.GetComponent<PlayerStateManager>().currentState = playerState.idle;
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void SetTurnServerRpc()
+    [ServerRpc]
+    private void EndGameServerRpc()
     {
-        SetTurnClientRpc();
+        EndGameClientRpc();
     }
 
     [ClientRpc]
-    private void SetTurnClientRpc()
+    private void EndGameClientRpc()
     {
-        PlayerStateManager[] playerManager = GameObject.FindObjectsOfType<PlayerStateManager>();
-        foreach (PlayerStateManager playerStateManager in playerManager) 
-        {
-            playerStateManager.currentState = PlayerStateManager.playerState.idle;
-        }
+        SceneMan.Instance.LoadGivenScene(4);
     }
 }

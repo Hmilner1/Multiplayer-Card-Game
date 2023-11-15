@@ -45,8 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fff4cd32f8c4d84696203db514a449b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameTimer: {fileID: 0}
-  endTurnButton: {fileID: 0}
+  currentState: 0
 --- !u!114 &2306159183569226104
 MonoBehaviour:
   m_ObjectHideFlags: 0

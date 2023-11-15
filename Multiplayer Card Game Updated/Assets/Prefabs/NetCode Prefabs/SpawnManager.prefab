@@ -49,6 +49,7 @@ MonoBehaviour:
   - {fileID: 3391511699263362218, guid: b84ceeecbfcdc0c4596f4db82c580f9b, type: 3}
   - {fileID: 5154087515696453918, guid: 057348f7dfb1792439366fecb56993b0, type: 3}
   playerPrefab: {fileID: 812655122688350235, guid: 9cb8bbb2e163f584196ca3513fea450c, type: 3}
+  gameManager: {fileID: 2306159183569226104, guid: f8703f57228fa9e4b8dccf9d9bd6bef5, type: 3}
 --- !u!114 &6933984618670306228
 MonoBehaviour:
   m_ObjectHideFlags: 0

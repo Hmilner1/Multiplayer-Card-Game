@@ -27,15 +27,7 @@ public class PlayerStateManager : NetworkBehaviour
         idle
     }
 
-    public enum playerTurnOrder
-    {
-        player1,
-        player2
-    }
-
     public playerState currentState;
-    public playerTurnOrder currentTurnOrder;
-
 
     private void OnEnable()
     {

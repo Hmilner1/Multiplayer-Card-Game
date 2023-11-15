@@ -32,9 +32,9 @@ public class SceneMan : MonoBehaviour
         SceneManager.LoadSceneAsync(SceneIndex);
         
         var NetMan = GameObject.FindObjectOfType<NetworkManager>();
-        var NetManObj = GameObject.FindObjectOfType<NetworkManager>().gameObject;
         if (NetMan != null)
         { 
+            var NetManObj = GameObject.FindObjectOfType<NetworkManager>().gameObject;
             Destroy(NetMan);
             Destroy(NetManObj);
         }

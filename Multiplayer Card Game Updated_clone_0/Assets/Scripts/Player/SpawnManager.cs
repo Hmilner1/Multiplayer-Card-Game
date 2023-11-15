@@ -8,6 +8,7 @@ public class SpawnManager : NetworkBehaviour
 {
     public List<Transform> spawnPoints;
     public NetworkObject playerPrefab;
+    public NetworkObject gameManager;
     private IReadOnlyList<NetworkClient> players;
     private bool playersSpawned;
     private GameObject mainCam;
@@ -42,11 +43,12 @@ public class SpawnManager : NetworkBehaviour
                         if (i == 1)
                         {
                             playerObject.GetComponent<NetworkObject>().ChangeOwnership(players[i].ClientId);
-                            playerObject.GetComponent<PlayerStateManager>().currentTurnOrder = PlayerStateManager.playerTurnOrder.player2;
                         }
                     }
                     playersSpawned = true;
                     DisableMainCamServerRpc();
+                    var GameManagerObj = Instantiate(gameManager);
+                    GameManagerObj.Spawn();
                 }
             }
         }
