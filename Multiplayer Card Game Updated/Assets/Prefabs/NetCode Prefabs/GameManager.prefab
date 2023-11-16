@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fff4cd32f8c4d84696203db514a449b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coinTossCanvas: {fileID: 7351548410464226434, guid: 21831f0c4649475468e98bec3c336c95, type: 3}
   currentState: 0
 --- !u!114 &2306159183569226104
 MonoBehaviour:

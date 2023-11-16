@@ -37,6 +37,8 @@ public class GameTimerUI : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (GameManager.Instance == null) return;
+        if (GameManager.Instance.currentState == GameManager.GameState.Start) return;
         if (timerStarted) { TimerCountDown(); }
     }
 

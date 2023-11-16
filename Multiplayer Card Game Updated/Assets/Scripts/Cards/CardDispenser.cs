@@ -19,9 +19,12 @@ public class CardDispenser : MonoBehaviour
             handSize++;
         }
 
-        if (handSize < 7)
+        for (int i = 0; i < CardsToAdd; i++)
         {
-            Instantiate(Card, playerHand.transform);
+            if (handSize < 7)
+            {
+                Instantiate(Card, playerHand.transform);
+            }
         }
     }
 }
