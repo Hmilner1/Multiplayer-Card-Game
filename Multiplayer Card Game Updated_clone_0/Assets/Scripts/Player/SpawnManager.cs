@@ -39,9 +39,11 @@ public class SpawnManager : NetworkBehaviour
                     {
                         int spawnIndex = i % spawnPoints.Count;
                         var playerObject = Instantiate(playerPrefab, spawnPoints[spawnIndex].position, spawnPoints[spawnIndex].rotation);
+                        playerObject.name = "Player1";
                         playerObject.Spawn();
                         if (i == 1)
                         {
+                            playerObject.name = "Player2";
                             playerObject.GetComponent<NetworkObject>().ChangeOwnership(players[i].ClientId);
                         }
                     }
