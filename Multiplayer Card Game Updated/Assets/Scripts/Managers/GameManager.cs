@@ -19,6 +19,7 @@ public class GameManager : NetworkBehaviour
     private bool CardsDrawn;
     private bool player1Turn;
     private bool player2Turn;
+    private bool coinTossed;
 
     public enum GameState
     { 
@@ -63,6 +64,7 @@ public class GameManager : NetworkBehaviour
         CardsDrawn = false;
         player1Turn = false;
         player2Turn = false;
+        coinTossed = false;
     }
 
     private void Update()
@@ -76,7 +78,7 @@ public class GameManager : NetworkBehaviour
             case GameState.player1:
                 if (!player1Turn)
                 {
-                    player1.GetComponent<PlayerStateManager>().currentState = playerState.selecting;
+                    SetPlayer1StateServerRpc();
 
                     var p1CardDispense = player1.transform.gameObject.GetComponentInChildren<CardDispenser>();
                     if (p1CardDispense != null)
@@ -89,7 +91,7 @@ public class GameManager : NetworkBehaviour
             case GameState.player2:
                 if (!player2Turn)
                 {
-                    player2.GetComponent<PlayerStateManager>().currentState = playerState.selecting;
+                    SetPlayer2StateServerRpc();
 
                     var p2CardDispense = player2.transform.gameObject.GetComponentInChildren<CardDispenser>();
                     if (p2CardDispense != null)
@@ -126,7 +128,7 @@ public class GameManager : NetworkBehaviour
 
     private void StartingPhase()
     {
-        SetPlayerStateServerRpc();
+        SetPlayerStartStateServerRpc();
         if (!coinTossSpawned && IsServer)
         {
             SetupCoinTossServerRpc();
@@ -148,8 +150,7 @@ public class GameManager : NetworkBehaviour
         p1Panel.transform.parent.gameObject.SetActive(false);
         if (IsServer)
         {
-            int random = Random.Range(1, 3);
-            CoinTossAnimationServerRpc(random);
+            CoinTossAnimationServerRpc();
         }
         StopCoroutine(RemoveCoinTossUI());
     }
@@ -199,6 +200,8 @@ public class GameManager : NetworkBehaviour
 
             CardsDrawn = true;
         }
+
+        Debug.Log(num);
     }
 
     private void EndPhase()
@@ -212,9 +215,15 @@ public class GameManager : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void CoinTossAnimationServerRpc(int num)
+    private void CoinTossAnimationServerRpc()
     {
-        CoinTossAnimationClientRpc(num);
+        int random = 3;
+        if (!coinTossed)
+        {
+            random = Random.Range(1, 3);
+            coinTossed = true;
+        }
+        CoinTossAnimationClientRpc(random);
     }
 
     [ClientRpc]
@@ -253,16 +262,42 @@ public class GameManager : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void SetPlayerStateServerRpc()
+    private void SetPlayerStartStateServerRpc()
     {
-        SetPlayerStateClientRpc();
+        SetPlayerStartStateClientRpc();
     }
 
     [ClientRpc]
-    private void SetPlayerStateClientRpc()
+    private void SetPlayerStartStateClientRpc()
     {
         player1.GetComponent<PlayerStateManager>().currentState = playerState.idle;
         player2.GetComponent<PlayerStateManager>().currentState = playerState.idle;
+    }
+
+    [ServerRpc]
+    private void SetPlayer1StateServerRpc()
+    {
+        SetPlayer1StateClientRpc();
+    }
+
+    [ClientRpc]
+    private void SetPlayer1StateClientRpc()
+    {
+        player1.GetComponent<PlayerStateManager>().currentState = playerState.selecting;
+        player2.GetComponent<PlayerStateManager>().currentState = playerState.idle;
+    }
+
+    [ServerRpc]
+    private void SetPlayer2StateServerRpc()
+    {
+        SetPlayer2StateClientRpc();
+    }
+
+    [ClientRpc]
+    private void SetPlayer2StateClientRpc()
+    {
+        player1.GetComponent<PlayerStateManager>().currentState = playerState.idle;
+        player2.GetComponent<PlayerStateManager>().currentState = playerState.selecting;
     }
 
     [ServerRpc]
