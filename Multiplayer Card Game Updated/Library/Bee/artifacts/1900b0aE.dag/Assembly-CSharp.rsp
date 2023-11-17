@@ -479,6 +479,7 @@
 "Assets/LeanTween/Testing/TestingSceneSwitching.cs"
 "Assets/LeanTween/Testing/TestingSequencer.cs"
 "Assets/Packages/ParrelSync/Examples/CustomArgumentExample.cs"
+"Assets/Scripts/Cards/CardDestruction/FallOffMap.cs"
 "Assets/Scripts/Cards/CardDispenser.cs"
 "Assets/Scripts/Cards/Movement/CardSpawn.cs"
 "Assets/Scripts/Managers/GameManager.cs"
