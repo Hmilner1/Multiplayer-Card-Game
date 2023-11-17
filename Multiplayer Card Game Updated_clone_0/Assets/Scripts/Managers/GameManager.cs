@@ -10,15 +10,16 @@ public class GameManager : NetworkBehaviour
     public static GameManager Instance;
     private GameObject player1;
     private GameObject player2;
-    private CardDispenser p1CardDispense;
-    private CardDispenser p2CardDispense;
+    //private CardDispenser p1CardDispense;
+    //private CardDispenser p2CardDispense;
     private string playerColourChoice;
 
     [SerializeField]
     private GameObject coinTossCanvas;
+    [SerializeField]
+    private Button endTurnButton;
     private GameObject p1Panel;
     private GameObject p2Panel;
-    private Button endTurnButton;
     private bool coinTossSpawned;
     private bool CardsDrawn;
     private bool player1Turn;
@@ -60,7 +61,6 @@ public class GameManager : NetworkBehaviour
             Destroy(gameObject);
         }
 
-        endTurnButton = GameObject.Find("EndTurnButton").GetComponent<Button>();
         endTurnButton.interactable = false;
 
         currentState= GameState.Start;
@@ -76,7 +76,6 @@ public class GameManager : NetworkBehaviour
 
     private void Update()
     {
-        endTurnButton.onClick.AddListener(OnClick);
         if (!IsServer) return;
         switch (currentState)
         {
@@ -87,12 +86,6 @@ public class GameManager : NetworkBehaviour
                 if (!player1Turn)
                 {
                     SetPlayer1StateServerRpc();
-
-                    if (!CardsDrawn)
-                    {
-                        p1CardDispense.OnClickDrawCard(1);
-                        CardsDrawn = true;
-                    }
                     player1Turn = true;
                 }
                 break;
@@ -100,15 +93,6 @@ public class GameManager : NetworkBehaviour
                 if (!player2Turn)
                 {
                     SetPlayer2StateServerRpc();
-
-                    if (!CardsDrawn)
-                    {
-                        if (p2CardDispense != null)
-                        {
-                            p2CardDispense.OnClickDrawCard(1);
-                            CardsDrawn = true;
-                        }
-                    }
                     player2Turn = true;
                 }
                 break;
@@ -123,18 +107,17 @@ public class GameManager : NetworkBehaviour
         PlayerStateManager[] playerManagers = GameObject.FindObjectsOfType<PlayerStateManager>();
         foreach (var playerManager in playerManagers)
         { 
-            var playerObject = playerManager.transform.gameObject;
-            var networkObj = playerObject.GetComponent<NetworkObject>();
+            var networkObj = playerManager.GetComponentInChildren<NetworkObject>();
             if (networkObj.OwnerClientId == 0)
             {
-                player1 = playerObject;
-                p1CardDispense = playerObject.GetComponentInChildren<CardDispenser>();
+                player1 = playerManager.transform.gameObject;
+                //p1CardDispense = playerManager.GetComponentInChildren<CardDispenser>();
 
             }
-            else
+            else if(networkObj.OwnerClientId == 1)
             { 
-                player2 = playerObject;
-                p2CardDispense = playerObject.GetComponentInChildren<CardDispenser>();
+                player2 = playerManager.transform.gameObject;
+                //p2CardDispense = playerManager.GetComponentInChildren<CardDispenser>();
             }
         }
     }
@@ -221,10 +204,9 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-    private void OnClick()
+    public void OnClickEndTurn()
     {
-        player1Turn = false;
-        player2Turn = false;
+        endTurnButton.interactable = false;
         if (currentState == GameState.player1)
         {
             ChangeStateServerRpc(GameState.player2);
@@ -314,19 +296,16 @@ public class GameManager : NetworkBehaviour
     [ClientRpc]
     private void SetPlayer1StateClientRpc()
     {
-        player1.GetComponent<PlayerStateManager>().currentState = playerState.selecting;
-        player2.GetComponent<PlayerStateManager>().currentState = playerState.idle;
-
-
-        if (IsClient)
-        {
-            endTurnButton.interactable = false;
-        }
-
+        player1Turn = false;
+        player2Turn = false;
         if (IsServer)
         {
             endTurnButton.interactable = true;
         }
+
+        player1.GetComponent<PlayerStateManager>().currentState = playerState.selecting;
+        player2.GetComponent<PlayerStateManager>().currentState = playerState.idle;
+
         CardsDrawn = false;
     }
 
@@ -339,18 +318,16 @@ public class GameManager : NetworkBehaviour
     [ClientRpc]
     private void SetPlayer2StateClientRpc()
     {
-        player1.GetComponent<PlayerStateManager>().currentState = playerState.idle;
-        player2.GetComponent<PlayerStateManager>().currentState = playerState.selecting;
-
-        if (IsServer)
-        {
-            endTurnButton.interactable = false;
-        }
-
+        player1Turn = false;
+        player2Turn = false;
         if (!IsServer && IsClient)
         {
             endTurnButton.interactable = true;
         }
+
+        player1.GetComponent<PlayerStateManager>().currentState = playerState.idle;
+        player2.GetComponent<PlayerStateManager>().currentState = playerState.selecting;
+
         CardsDrawn = false;
     }
 
