@@ -496,6 +496,7 @@
 "Assets/Scripts/UI/NetworkDebugGui.cs"
 "Assets/Scripts/UI/PrivateMatchMaker.cs"
 "Assets/Scripts/UI/PrivateMatchUIManager.cs"
+"Assets/Scripts/UI/test.cs"
 "Assets/Scripts/UI/UIAnimationController.cs"
 -langversion:9.0
 

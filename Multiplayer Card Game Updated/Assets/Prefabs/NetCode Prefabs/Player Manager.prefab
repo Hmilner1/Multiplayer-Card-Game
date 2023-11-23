@@ -251,6 +251,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6323726190071047625}
+  - component: {fileID: 4488789497674419831}
   - component: {fileID: 1685407690315633202}
   m_Layer: 6
   m_Name: FireLineRender
@@ -274,6 +275,19 @@ Transform:
   m_Father: {fileID: 6722745345466630096}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4488789497674419831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2914942080507943569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 354d0e1e7b73f66468fdeb6e01ca3519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineRenderer: {fileID: 1685407690315633202}
 --- !u!120 &1685407690315633202
 LineRenderer:
   serializedVersion: 2
@@ -409,7 +423,7 @@ GameObject:
   - component: {fileID: 880114537919496087}
   - component: {fileID: 5560302547157531975}
   - component: {fileID: 5608832009295149396}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: DrawCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -702,7 +716,7 @@ GameObject:
   - component: {fileID: 9045935799504773714}
   - component: {fileID: 4512093132292848294}
   - component: {fileID: 470325029722109615}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -965,7 +979,7 @@ GameObject:
   - component: {fileID: 6451613470129557121}
   - component: {fileID: 6077768247026494636}
   - component: {fileID: 8349470923284711917}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MainUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}

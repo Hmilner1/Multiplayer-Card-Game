@@ -102,7 +102,7 @@ public class GameManager : NetworkBehaviour
         }
     }
 
-    private void SetPlayerID()
+    protected virtual void SetPlayerID()
     {
         PlayerStateManager[] playerManagers = GameObject.FindObjectsOfType<PlayerStateManager>();
         foreach (var playerManager in playerManagers)
