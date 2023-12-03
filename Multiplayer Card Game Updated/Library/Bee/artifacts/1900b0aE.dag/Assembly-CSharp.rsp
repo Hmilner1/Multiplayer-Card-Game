@@ -483,7 +483,10 @@
 "Assets/Scripts/Cards/CardDispenser.cs"
 "Assets/Scripts/Cards/Movement/CardSpawn.cs"
 "Assets/Scripts/Managers/GameManager.cs"
+"Assets/Scripts/Managers/SaveManager.cs"
 "Assets/Scripts/Managers/SceneMan.cs"
+"Assets/Scripts/Player/PlayerInfoManager.cs"
+"Assets/Scripts/Player/PlayerSaving/PlayerInfo.cs"
 "Assets/Scripts/Player/PlayerSetupManager.cs"
 "Assets/Scripts/Player/PlayerStateManager.cs"
 "Assets/Scripts/Player/SpawnManager.cs"
@@ -496,7 +499,6 @@
 "Assets/Scripts/UI/NetworkDebugGui.cs"
 "Assets/Scripts/UI/PrivateMatchMaker.cs"
 "Assets/Scripts/UI/PrivateMatchUIManager.cs"
-"Assets/Scripts/UI/test.cs"
 "Assets/Scripts/UI/UIAnimationController.cs"
 -langversion:9.0
 
