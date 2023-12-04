@@ -6,19 +6,6 @@ using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
-    private static SaveManager instance;
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
     public static void SavePlayerInfo(PlayerInfoManager info)
     {
         BinaryFormatter SaveFormatter = new BinaryFormatter();

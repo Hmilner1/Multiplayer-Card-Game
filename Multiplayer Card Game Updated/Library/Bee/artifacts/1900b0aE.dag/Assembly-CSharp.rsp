@@ -495,10 +495,13 @@
 "Assets/Scripts/UI/GameTimerUI.cs"
 "Assets/Scripts/UI/HandUIController.cs"
 "Assets/Scripts/UI/MainMenu/MainUIMatchMake.cs"
+"Assets/Scripts/UI/MenuGroup.cs"
+"Assets/Scripts/UI/MenuSection.cs"
 "Assets/Scripts/UI/MenuUIScroller.cs"
 "Assets/Scripts/UI/NetworkDebugGui.cs"
 "Assets/Scripts/UI/PrivateMatchMaker.cs"
 "Assets/Scripts/UI/PrivateMatchUIManager.cs"
+"Assets/Scripts/UI/UIAccountSection.cs"
 "Assets/Scripts/UI/UIAnimationController.cs"
 -langversion:9.0
 
