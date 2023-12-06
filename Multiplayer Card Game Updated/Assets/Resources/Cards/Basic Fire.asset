@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f48b7b998e7d1d9429b3059ca3cf3422, type: 3}
+  m_Name: Basic Fire
+  m_EditorClassIdentifier: 
+  cardID: 2
+  cardName: Basic Fire
+  cardDamage: 20
+  cardWeight: 2
+  cardImage: {fileID: 21300000, guid: 0294c24ce01c04d4e8b3c4177c2513c9, type: 3}

@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a4c513cca80daf3489cb69647675f146, type: 3}
-  m_Color: {r: 0.3019608, g: 0.627451, b: 0.5058824, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -93,6 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 126774924552542706}
+  - component: {fileID: 5738740247942045061}
   - component: {fileID: 1623973245752401690}
   - component: {fileID: 5835967683783503415}
   - component: {fileID: 1586588524855904223}
@@ -122,6 +123,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5738740247942045061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5252727737252750188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75e00eec959b8f34695ab5c12ae00579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentCard: {fileID: 11400000, guid: d4f8cf5dae97e884fad98fede89bad35, type: 2}
+  cardImage: {fileID: 1621882451044764307}
 --- !u!114 &1623973245752401690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,7 +177,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7c94c4b570741744b8c8c9de18037c87, type: 2}
+  - {fileID: 2100000, guid: fff4bcaea65d59a49887bba28b07ba16, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -203,8 +218,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1.3236076, z: 1}
+  m_Center: {x: 0, y: 0.16180366, z: 0}
 --- !u!54 &2523530946534896161
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -11,7 +11,11 @@ public class SpawnManager : NetworkBehaviour
     public NetworkObject gameManager;
     private IReadOnlyList<NetworkClient> players;
     private bool playersSpawned;
+    private bool infoSpawned;
     private GameObject mainCam;
+    [SerializeField]
+    private GameObject playerSaveInfo;
+
 
     public override void OnNetworkSpawn()
     { 
@@ -19,10 +23,27 @@ public class SpawnManager : NetworkBehaviour
         mainCam = GameObject.Find("MainCamera");
     }
 
+    private void Start()
+    {
+        infoSpawned = false;
+    }
+
     private void Update()
     {
+      
         if (!IsServer) return;
         BothPlayersConnected();
+        if (!infoSpawned && playersSpawned)
+        {
+            SpawnInfoServerRpc();
+        }
+    }
+
+    private void LoadPlayerInfo()
+    { 
+        Instantiate(playerSaveInfo);
+        infoSpawned = true;
+        GameManager.Instance.SetPlayerNames();
     }
 
     private void BothPlayersConnected()
@@ -66,5 +87,17 @@ public class SpawnManager : NetworkBehaviour
     private void DisableMainCamClientRpc()
     {
         Destroy(mainCam);
+    }
+
+    [ServerRpc]
+    private void SpawnInfoServerRpc()
+    {
+        SpawnInfoClientRpc();
+    }
+
+    [ClientRpc]
+    private void SpawnInfoClientRpc()
+    {
+        LoadPlayerInfo();
     }
 }

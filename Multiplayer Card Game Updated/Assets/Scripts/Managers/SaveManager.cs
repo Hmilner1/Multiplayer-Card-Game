@@ -3,13 +3,23 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+#if UNITY_EDITOR
+using ParrelSync;
+#endif
 
 public class SaveManager : MonoBehaviour
 {
     public static void SavePlayerInfo(PlayerInfoManager info)
     {
+        string SavePath = " ";
         BinaryFormatter SaveFormatter = new BinaryFormatter();
-        string SavePath = Application.persistentDataPath + "/PlayerInfo.data";
+        SavePath = Application.persistentDataPath + "/PlayerInfo.data";
+#if UNITY_EDITOR
+        if (ClonesManager.IsClone())
+        {
+            SavePath = Application.persistentDataPath + "/PlayerInfoEditor.data";
+        }
+#endif
         FileStream fileStream = new FileStream(SavePath, FileMode.Create);
 
         PlayerInfo settings = new PlayerInfo(info);
@@ -21,7 +31,14 @@ public class SaveManager : MonoBehaviour
 
     public static PlayerInfo LoadPlayerInfo()
     {
-        string SavePath = Application.persistentDataPath + "/PlayerInfo.data";
+        string SavePath = " ";
+        SavePath = Application.persistentDataPath + "/PlayerInfo.data";
+#if UNITY_EDITOR
+        if (ClonesManager.IsClone())
+        {
+            SavePath = Application.persistentDataPath + "/PlayerInfoEditor.data";
+        }
+#endif
         if (File.Exists(SavePath))
         {
             BinaryFormatter SaveFormatter = new BinaryFormatter();

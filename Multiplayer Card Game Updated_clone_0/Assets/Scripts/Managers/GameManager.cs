@@ -4,14 +4,17 @@ using UnityEngine;
 using Unity.Netcode;
 using static PlayerStateManager;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : NetworkBehaviour
 {
     public static GameManager Instance;
     private GameObject player1;
     private GameObject player2;
-    //private CardDispenser p1CardDispense;
-    //private CardDispenser p2CardDispense;
+
+    private TextMeshProUGUI player1Name;
+    private TextMeshProUGUI player2Name;
+
     private string playerColourChoice;
 
     [SerializeField]
@@ -25,6 +28,7 @@ public class GameManager : NetworkBehaviour
     private bool player1Turn;
     private bool player2Turn;
     private bool coinTossed;
+    private bool namesSet;
 
     public enum GameState
     { 
@@ -63,6 +67,12 @@ public class GameManager : NetworkBehaviour
 
         endTurnButton.interactable = false;
 
+        var playerSaves = GameObject.FindObjectsOfType<PlayerInfoManager>();
+        foreach (var saves in playerSaves)
+        { 
+            Destroy(saves.gameObject);
+        }
+
         currentState= GameState.Start;
 
         SetPlayerID();
@@ -72,6 +82,7 @@ public class GameManager : NetworkBehaviour
         player1Turn = false;
         player2Turn = false;
         coinTossed = false;
+        namesSet = false;
     }
 
     private void Update()
@@ -111,13 +122,28 @@ public class GameManager : NetworkBehaviour
             if (networkObj.OwnerClientId == 0)
             {
                 player1 = playerManager.transform.gameObject;
-                //p1CardDispense = playerManager.GetComponentInChildren<CardDispenser>();
 
             }
             else if(networkObj.OwnerClientId == 1)
             { 
                 player2 = playerManager.transform.gameObject;
-                //p2CardDispense = playerManager.GetComponentInChildren<CardDispenser>();
+            }
+        }
+    }
+
+    public void SetPlayerNames()
+    {
+        if (!namesSet)
+        {
+            var playerSave = GameObject.FindObjectOfType<PlayerInfoManager>();
+            if (IsServer)
+            {
+                SetName1ServerRpc(playerSave.playerName);
+            }
+            else
+            { 
+                SetName2ServerRpc(playerSave.playerName);
+
             }
         }
     }
@@ -202,6 +228,19 @@ public class GameManager : NetworkBehaviour
 
             CardsDrawn = true;
         }
+        if (IsServer)
+        {
+            RemoveCoinServerRpc();
+        }
+    }
+
+    IEnumerator RemoveCoin()
+    {
+        yield return new WaitForSeconds(2f);
+
+        GameObject Coin = GameObject.Find("Coin");
+        Destroy(Coin);
+        StopCoroutine(RemoveCoin());
     }
 
     public void OnClickEndTurn()
@@ -227,6 +266,33 @@ public class GameManager : NetworkBehaviour
         currentState = GameState.End;
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    private void SetName1ServerRpc(string Name)
+    {
+        SetName1ClientRpc(Name);
+    }
+
+    [ClientRpc]
+    private void SetName1ClientRpc(string Name)
+    {
+        player1Name = GameObject.Find("Player1 Name").GetComponent<TextMeshProUGUI>();
+        player1Name.text = Name;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetName2ServerRpc(string Name)
+    {
+        SetName2ClientRpc(Name);
+    }
+
+    [ClientRpc]
+    private void SetName2ClientRpc(string Name)
+    {
+        player2Name = GameObject.Find("Player2 Name").GetComponent<TextMeshProUGUI>();
+        player2Name.text = Name;
+    }
+
+
     [ServerRpc]
     private void CoinTossAnimationServerRpc()
     {
@@ -243,6 +309,18 @@ public class GameManager : NetworkBehaviour
     private void CoinTossAnimationClientRpc(int num)
     {
         CoinTossAnimation(num);
+    }
+
+    [ServerRpc]
+    private void RemoveCoinServerRpc()
+    {
+        RemoveCoinClientRpc();
+    }
+
+    [ClientRpc]
+    private void RemoveCoinClientRpc()
+    {
+        StartCoroutine(RemoveCoin());
     }
 
     [ClientRpc]

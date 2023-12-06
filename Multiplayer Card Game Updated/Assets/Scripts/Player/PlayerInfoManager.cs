@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerInfoManager : MonoBehaviour
 {
+    private PlayerInfoManager Instance;
     public string playerName;
     public int playerLevel;
     public int playerTotalXP;
@@ -14,7 +15,17 @@ public class PlayerInfoManager : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        //DontDestroyOnLoad(gameObject);
+
         Debug.Log(Application.persistentDataPath);
 
         PlayerInfo saveInfo = SaveManager.LoadPlayerInfo();
@@ -31,7 +42,15 @@ public class PlayerInfoManager : MonoBehaviour
             playerName = "Enter A Name";
             playerLevel = 0;
             playerTotalXP = 0;
-
+            deck = new int[30];
+            for (int i = 0;i < deck.Length; i++) 
+            {
+                deck[i] = 0;
+            }
+            unlockedCards.Add(0);
+            unlockedCards.Add(1);
+            unlockedCards.Add(2);
+            unlockedCards.Add(3);
             SaveManager.SavePlayerInfo(this);
         }
     }

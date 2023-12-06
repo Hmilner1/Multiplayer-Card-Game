@@ -86,6 +86,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6807738768153989674}
   - component: {fileID: 195831413497957760}
+  - component: {fileID: 1424440527252721993}
   - component: {fileID: 4386298221691032738}
   - component: {fileID: 4033702768436942697}
   - component: {fileID: 3113734427947429759}
@@ -125,6 +126,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3343762466246535929}
   m_CullTransparentMesh: 1
+--- !u!114 &1424440527252721993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3343762466246535929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f2742e1fc7252f488a4107d41f9a266, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentCard: {fileID: 11400000, guid: d4f8cf5dae97e884fad98fede89bad35, type: 2}
+  cardImage: {fileID: 4386298221691032738}
 --- !u!114 &4386298221691032738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4008989, g: 0.8584906, b: 0.71222144, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
