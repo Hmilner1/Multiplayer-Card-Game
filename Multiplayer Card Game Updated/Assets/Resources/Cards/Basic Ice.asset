@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f48b7b998e7d1d9429b3059ca3cf3422, type: 3}
   m_Name: Basic Ice
   m_EditorClassIdentifier: 
-  cardID: 0
-  cardName: Basic Ice
+  cardID: 3
+  cardName: Ice Light
   cardDamage: 5
   cardWeight: 0
   cardImage: {fileID: 21300000, guid: 4cb467e06d614e24fa062380c144d8cf, type: 3}

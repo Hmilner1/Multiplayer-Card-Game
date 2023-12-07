@@ -19,9 +19,13 @@ public class PlayerStateManager : NetworkBehaviour
     private LineRenderer lineRenderer;
     [SerializeField]
     private CardDataBase cardData;
+    [SerializeField]
+    private CardDispenser dispenser;
+    private bool cardDrawn;
     private Vector2 FirePoint;
     public HandUIController handUIController;
     public int firedCard;
+    public List<GameObject> spawnedCards;
 
     public enum playerState
     { 
@@ -49,6 +53,7 @@ public class PlayerStateManager : NetworkBehaviour
             DisableMatchMakingServerRpc();
             DisablePrivateMatchMakingServerRpc();
         }
+        cardDrawn = false;
         lineRenderer.enabled = false;
     }
 
@@ -59,9 +64,15 @@ public class PlayerStateManager : NetworkBehaviour
         {
             case playerState.idle:
                 Idle();
+                cardDrawn = false;
                 break;
             case playerState.selecting:
                 Selecting();
+                if (!cardDrawn)
+                {
+                    dispenser.OnClickDrawCard(1);
+                    cardDrawn = true;
+                }
                 break;
             case playerState.firing:
                 Firing();
@@ -142,6 +153,10 @@ public class PlayerStateManager : NetworkBehaviour
         CardObject cardobj = Card.GetComponent<CardObject>();
         cardobj.currentCard = cardData.cardDatabase[card];
         Card.Init(dir * cardSpeed);
+        if (IsOwner)
+        {
+            spawnedCards.Add(Card.gameObject);
+        }
     }
 
     private void EndFireState()

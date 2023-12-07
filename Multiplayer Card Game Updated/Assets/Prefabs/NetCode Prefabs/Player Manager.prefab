@@ -452,7 +452,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3174743899505717536}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -497,7 +497,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3174743899505717536}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -709,7 +709,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &9045935799504773714
 RectTransform:
   m_ObjectHideFlags: 0
@@ -889,7 +889,10 @@ MonoBehaviour:
   handCanvas: {fileID: 2809092875765063284}
   lineRenderer: {fileID: 1685407690315633202}
   cardData: {fileID: 11400000, guid: 27e29b9fe18250d4985824705c8e9a7a, type: 2}
+  dispenser: {fileID: 5560302547157531975}
   handUIController: {fileID: 0}
+  firedCard: 0
+  spawnedCards: []
   currentState: 0
 --- !u!114 &5758215796670503509
 MonoBehaviour:

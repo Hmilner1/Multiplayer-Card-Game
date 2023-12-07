@@ -237,9 +237,8 @@ public class GameManager : NetworkBehaviour
     IEnumerator RemoveCoin()
     {
         yield return new WaitForSeconds(2f);
-
         GameObject Coin = GameObject.Find("Coin");
-        Destroy(Coin);
+        LeanTween.scale(Coin, new Vector3(0, 0, 0), 0.2f).setEase(LeanTweenType.easeInOutElastic).setDestroyOnComplete(true);
         StopCoroutine(RemoveCoin());
     }
 

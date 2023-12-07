@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Basic Card
   m_EditorClassIdentifier: 
   cardID: 0
-  cardName: Basic
+  cardName: Basic Light
   cardDamage: 5
   cardWeight: 0
   cardImage: {fileID: 21300000, guid: 411633af33fa82343854e4efbbcd331c, type: 3}
