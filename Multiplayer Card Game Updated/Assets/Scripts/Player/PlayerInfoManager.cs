@@ -9,6 +9,8 @@ public class PlayerInfoManager : MonoBehaviour
     public string playerName;
     public int playerLevel;
     public int playerTotalXP;
+    public int playerRank;
+    public int packCount;
     public int[] deck = new int[30];
     public List<int> unlockedCards = new List<int>();
 
@@ -24,7 +26,6 @@ public class PlayerInfoManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        //DontDestroyOnLoad(gameObject);
 
         Debug.Log(Application.persistentDataPath);
 
@@ -34,6 +35,8 @@ public class PlayerInfoManager : MonoBehaviour
             playerName = saveInfo.playerName;
             playerLevel = saveInfo.playerLevel;
             playerTotalXP = saveInfo.playerTotalXP;
+            playerRank = saveInfo.playerRank;
+            packCount = saveInfo.packCount;
             deck = saveInfo.deck;
             unlockedCards = saveInfo.unlockedCards;
         }
@@ -42,15 +45,14 @@ public class PlayerInfoManager : MonoBehaviour
             playerName = "Enter A Name";
             playerLevel = 0;
             playerTotalXP = 0;
+            playerRank = 0;
+            packCount = 3;
             deck = new int[30];
             for (int i = 0;i < deck.Length; i++) 
             {
                 deck[i] = 0;
             }
             unlockedCards.Add(0);
-            unlockedCards.Add(1);
-            unlockedCards.Add(2);
-            unlockedCards.Add(3);
             SaveManager.SavePlayerInfo(this);
         }
     }

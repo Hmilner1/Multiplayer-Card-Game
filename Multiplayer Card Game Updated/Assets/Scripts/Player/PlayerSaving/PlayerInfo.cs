@@ -8,6 +8,8 @@ public class PlayerInfo
     public string playerName;
     public int playerLevel;
     public int playerTotalXP;
+    public int playerRank;
+    public int packCount;
     public int[] deck = new int[30];
     public List<int> unlockedCards = new List<int>();
 
@@ -16,6 +18,8 @@ public class PlayerInfo
         playerName = saveInfo.playerName;
         playerLevel = saveInfo.playerLevel;
         playerTotalXP = saveInfo.playerTotalXP;
+        playerRank = saveInfo.playerRank;
+        packCount = saveInfo.packCount;
         deck = saveInfo.deck;
         unlockedCards = saveInfo.unlockedCards;
     }

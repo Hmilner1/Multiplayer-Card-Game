@@ -489,6 +489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHand: {fileID: 1108186351244565764}
   Card: {fileID: 3343762466246535929, guid: 9d90f87eef3432b47bd0b72536fd9c3c, type: 3}
+  cardData: {fileID: 11400000, guid: 27e29b9fe18250d4985824705c8e9a7a, type: 2}
 --- !u!114 &5608832009295149396
 MonoBehaviour:
   m_ObjectHideFlags: 0

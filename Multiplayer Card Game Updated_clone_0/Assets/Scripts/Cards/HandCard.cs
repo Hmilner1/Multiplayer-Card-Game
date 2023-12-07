@@ -5,14 +5,12 @@ using UnityEngine.UI;
 
 public class HandCard : MonoBehaviour
 {
-    [SerializeField]
-    private CardSo currentCard;
+    public CardSo currentCard;
     [SerializeField]
     private Image cardImage;
 
-    private void Awake()
+    private void Start()
     {
         cardImage.sprite = currentCard.cardImage;
     }
-
 }

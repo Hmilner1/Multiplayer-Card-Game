@@ -1,9 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static MenuGroup;
 
 public class MenuGroup : MonoBehaviour
 {
+    #region Events
+    public delegate void NewTab();
+    public static event NewTab OnNewTab;
+    #endregion
+
     public List<MenuSection> menuSections;
     [SerializeField]
     private float animationTime;
@@ -41,6 +47,7 @@ public class MenuGroup : MonoBehaviour
         LeanTween.scale(section.sectionObject, new Vector3(1f, 1f, 1f), animationTime).setEase(LeanTweenType.easeOutElastic);
         LeanTween.rotateZ(section.sectionObject, 1.5f, .2f).setEase(LeanTweenType.easeOutElastic);
         section.sectionObject.SetActive(true);
+        OnNewTab?.Invoke();
     }
 
     private void ResetGroups()
