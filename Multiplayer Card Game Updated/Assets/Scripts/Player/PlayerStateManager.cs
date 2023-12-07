@@ -17,8 +17,11 @@ public class PlayerStateManager : NetworkBehaviour
     Canvas handCanvas;
     [SerializeField]
     private LineRenderer lineRenderer;
+    [SerializeField]
+    private CardDataBase cardData;
     private Vector2 FirePoint;
     public HandUIController handUIController;
+    public int firedCard;
 
     public enum playerState
     { 
@@ -97,8 +100,8 @@ public class PlayerStateManager : NetworkBehaviour
 
             lineRenderer.enabled = false;
 
-            FireServerRpc(CalculateFireForce());
-            Fire(CalculateFireForce());
+            FireServerRpc(CalculateFireForce(), firedCard);
+            Fire(CalculateFireForce(), firedCard);
 
             EndFireState();
         }
@@ -133,9 +136,11 @@ public class PlayerStateManager : NetworkBehaviour
         return dir;
     }
 
-    private void Fire(Vector3 dir)
+    private void Fire(Vector3 dir, int card)
     {
         var Card = Instantiate(cardToSpawn, cardSpawnPoint.transform.position, cardSpawnPoint.transform.rotation);
+        CardObject cardobj = Card.GetComponent<CardObject>();
+        cardobj.currentCard = cardData.cardDatabase[card];
         Card.Init(dir * cardSpeed);
     }
 
@@ -146,17 +151,17 @@ public class PlayerStateManager : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void FireServerRpc(Vector3 dir)
+    private void FireServerRpc(Vector3 dir, int card)
     {
-        FireClientRpc(dir);
+        FireClientRpc(dir, card);
     }
 
     [ClientRpc]
-    private void FireClientRpc(Vector3 dir)
+    private void FireClientRpc(Vector3 dir, int card)
     {
         if (!IsOwner)
         {
-            Fire(dir);
+            Fire(dir, card);
         }
     }
 

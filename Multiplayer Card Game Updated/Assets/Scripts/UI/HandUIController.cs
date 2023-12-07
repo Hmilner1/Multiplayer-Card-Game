@@ -66,6 +66,7 @@ public class HandUIController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f);
         playerStateManager.currentState = PlayerStateManager.playerState.firing;
+        playerStateManager.firedCard = this.gameObject.GetComponent<HandCard>().currentCard.cardID;
         playerStateManager.handUIController = this;
     }
     IEnumerator FirePause(GameObject card)

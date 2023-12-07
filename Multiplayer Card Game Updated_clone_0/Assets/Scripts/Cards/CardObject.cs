@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class CardObject : MonoBehaviour
 {
-    [SerializeField]
-    private CardSo currentCard;
+    public CardSo currentCard;
     [SerializeField]
     private SpriteRenderer cardImage;
 
-    private void Awake()
+    private void Start()
     {
         cardImage.sprite = currentCard.cardImage;
     }

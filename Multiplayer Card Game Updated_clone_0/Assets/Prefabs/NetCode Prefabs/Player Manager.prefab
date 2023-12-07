@@ -888,6 +888,7 @@ MonoBehaviour:
   cardSpeed: 10000
   handCanvas: {fileID: 2809092875765063284}
   lineRenderer: {fileID: 1685407690315633202}
+  cardData: {fileID: 11400000, guid: 27e29b9fe18250d4985824705c8e9a7a, type: 2}
   handUIController: {fileID: 0}
   currentState: 0
 --- !u!114 &5758215796670503509
