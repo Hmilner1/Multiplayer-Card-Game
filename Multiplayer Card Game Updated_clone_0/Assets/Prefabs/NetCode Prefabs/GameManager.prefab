@@ -196,7 +196,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -5
   m_TargetDisplay: 0
 --- !u!114 &2096878468861042725
 MonoBehaviour:
@@ -420,6 +420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinTossCanvas: {fileID: 7351548410464226434, guid: 21831f0c4649475468e98bec3c336c95, type: 3}
   endTurnButton: {fileID: 7151769441182505090}
+  endScreen: {fileID: 6584968884840905297, guid: 393360d92d930f5469527dd03a184aa9, type: 3}
   currentState: 0
 --- !u!114 &2306159183569226104
 MonoBehaviour:

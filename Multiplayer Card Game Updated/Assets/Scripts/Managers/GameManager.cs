@@ -5,6 +5,7 @@ using Unity.Netcode;
 using static PlayerStateManager;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class GameManager : NetworkBehaviour
 {
@@ -21,6 +22,8 @@ public class GameManager : NetworkBehaviour
     private GameObject coinTossCanvas;
     [SerializeField]
     private Button endTurnButton;
+    [SerializeField]
+    private GameObject endScreen;
     private GameObject p1Panel;
     private GameObject p2Panel;
     private bool coinTossSpawned;
@@ -29,6 +32,12 @@ public class GameManager : NetworkBehaviour
     private bool player2Turn;
     private bool coinTossed;
     private bool namesSet;
+    private bool endScreenDisplayed;
+    private bool P1Calculated;
+    private bool P2Calculated;
+
+    private int P1Damage = 0;
+    private int P2Damage = 0;
 
     public enum GameState
     { 
@@ -83,10 +92,28 @@ public class GameManager : NetworkBehaviour
         player2Turn = false;
         coinTossed = false;
         namesSet = false;
+        endScreenDisplayed = false;
+        P1Calculated = false;
+        P2Calculated = false;
     }
 
     private void Update()
     {
+        if (currentState == GameState.End)
+        {
+            if (!P2Calculated && IsClient && !IsServer && endScreenDisplayed)
+            {
+                List<GameObject> player2Cards = new List<GameObject>();
+                player2Cards = player2.GetComponent<PlayerStateManager>().spawnedCards;
+
+                foreach (GameObject card in player2Cards)
+                {
+                    P2Damage = P2Damage + card.GetComponent<CardObject>().currentCard.cardDamage;
+                }
+                CalculateDamage2ServerRpc(P2Damage);
+                P2Calculated = true;
+            }
+        }
         if (!IsServer) return;
         switch (currentState)
         {
@@ -257,8 +284,33 @@ public class GameManager : NetworkBehaviour
 
     private void EndPhase()
     {
-        EndGameServerRpc();
+        if (!endScreenDisplayed)
+        {
+            EndGameServerRpc();
+        }
+        if (IsServer && !P1Calculated)
+        {
+            List<GameObject> player1Cards = new List<GameObject>();
+            player1Cards = player1.GetComponent<PlayerStateManager>().spawnedCards;
+
+            foreach (GameObject card in player1Cards)
+            {
+                P1Damage = P1Damage + card.GetComponent<CardObject>().currentCard.cardDamage;
+            }
+
+            CalculateDamage1ServerRpc(P1Damage);
+            P1Calculated= true;
+        }
+        StartCoroutine(EndScreenWait());
     }
+
+    IEnumerator EndScreenWait()
+    {
+        yield return new WaitForSeconds(3f);
+        EndSceneServerRpc();
+        StopCoroutine(EndScreenWait());
+    }
+
 
     private void EndTimer()
     {
@@ -444,6 +496,70 @@ public class GameManager : NetworkBehaviour
     [ClientRpc]
     private void EndGameClientRpc()
     {
-        SceneMan.Instance.LoadGivenScene(4);
+        Instantiate(endScreen, GameObject.Find("Player Info Canvas").transform);
+        endScreenDisplayed = true;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void CalculateDamage1ServerRpc(int Damage)
+    {
+        CalculateDamage1ClientRpc(Damage);
+    }
+
+    [ClientRpc]
+    private void CalculateDamage1ClientRpc(int Damage)
+    {
+        P1Damage = Damage;
+        GameObject.Find("P1Damage").GetComponent<TextMeshProUGUI>().text = Damage.ToString();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void CalculateDamage2ServerRpc(int Damage)
+    {
+        CalculateDamage2ClientRpc(Damage);
+    }
+
+    [ClientRpc]
+    private void CalculateDamage2ClientRpc(int Damage)
+    {
+        P2Damage = Damage;
+        GameObject.Find("P2Damage").GetComponent<TextMeshProUGUI>().text = Damage.ToString();
+    }
+
+    [ServerRpc]
+    private void EndSceneServerRpc()
+    {
+        EndSceneClientRpc();
+    }
+
+    [ClientRpc]
+    private void EndSceneClientRpc( )
+    {
+        if (P1Damage > P2Damage)
+        {
+            if (IsClient && !IsServer)
+            {
+                SceneMan.Instance.LoadGivenScene(4);
+            }
+            else if (IsServer)
+            {
+                SceneMan.Instance.LoadGivenScene(5);
+            }
+        }
+        else if (P1Damage < P2Damage)
+        {
+            if (IsClient && !IsServer)
+            {
+                SceneMan.Instance.LoadGivenScene(5);
+            }
+            else if (IsServer)
+            {
+                SceneMan.Instance.LoadGivenScene(4);
+            }
+        }
+        else if (P1Damage == P2Damage)
+        {
+            SceneMan.Instance.LoadGivenScene(5);
+        }
     }
 }
