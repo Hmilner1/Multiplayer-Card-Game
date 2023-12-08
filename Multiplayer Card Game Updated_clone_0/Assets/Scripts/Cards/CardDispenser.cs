@@ -10,9 +10,10 @@ public class CardDispenser : MonoBehaviour
     private GameObject Card;
     [SerializeField]
     private CardDataBase cardData;
+    [SerializeField]
+    private List<int> deckCards = new List<int>();
     private int handSize;
     private PlayerInfoManager playerInfoManager;
-    private List<int> deckCards = new List<int>();
 
     private void Start()
     {
@@ -26,33 +27,44 @@ public class CardDispenser : MonoBehaviour
         { 
             deckCards.Add(cardID);
         }
+        Shuffle(deckCards);
     }
 
     public void OnClickDrawCard(int CardsToAdd)
     {
-        handSize = 0;
-
-        foreach (var card in GameObject.FindGameObjectsWithTag("Card"))
+        if (deckCards.Count > 0)
         {
-            handSize++;
-        }
+            handSize = 0;
 
-        for (int i = 0; i < CardsToAdd; i++)
-        {
-            if (handSize < 7)
+            foreach (var card in GameObject.FindGameObjectsWithTag("Card"))
             {
-                var cardSpawned = Instantiate(Card, playerHand.transform);
-                HandCard card = cardSpawned.GetComponent<HandCard>();
-                int cardInt = RandomCard();
-                card.currentCard = cardData.cardDatabase[deckCards[cardInt]];
-                deckCards.RemoveAt(cardInt);
+                handSize++;
+            }
+
+            for (int i = 0; i < CardsToAdd; i++)
+            {
+                if (handSize < 7)
+                {
+                    var cardSpawned = Instantiate(Card, playerHand.transform);
+                    HandCard card = cardSpawned.GetComponent<HandCard>();
+
+                    card.currentCard = cardData.cardDatabase[deckCards[0]];
+                    deckCards.RemoveAt(0);
+                }
             }
         }
     }
 
-    private int RandomCard()
+    public void Shuffle(List<int> Deck)
     {
-        int CardToDraw = Random.Range(0, deckCards.Count);
-        return CardToDraw;
+        List<int> tempDeck = new List<int>();
+        tempDeck = Deck;
+
+        for (int i = 0; i < Deck.Count; i++)
+        {
+            int index = Random.Range(0, tempDeck.Count);
+            deckCards.Add(tempDeck[index]);
+            tempDeck.RemoveAt(index);
+        }
     }
 }

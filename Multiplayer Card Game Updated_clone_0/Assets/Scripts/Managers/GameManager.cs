@@ -108,12 +108,16 @@ public class GameManager : NetworkBehaviour
 
                 foreach (GameObject card in player2Cards)
                 {
-                    P2Damage = P2Damage + card.GetComponent<CardObject>().currentCard.cardDamage;
+                    if (card != null)
+                    {
+                        P2Damage = P2Damage + card.GetComponent<CardObject>().currentCard.cardDamage;
+                    }
                 }
                 CalculateDamage2ServerRpc(P2Damage);
                 P2Calculated = true;
             }
         }
+
         if (!IsServer) return;
         switch (currentState)
         {
@@ -295,7 +299,10 @@ public class GameManager : NetworkBehaviour
 
             foreach (GameObject card in player1Cards)
             {
-                P1Damage = P1Damage + card.GetComponent<CardObject>().currentCard.cardDamage;
+                if (card != null)
+                {
+                    P1Damage = P1Damage + card.GetComponent<CardObject>().currentCard.cardDamage;
+                }
             }
 
             CalculateDamage1ServerRpc(P1Damage);
