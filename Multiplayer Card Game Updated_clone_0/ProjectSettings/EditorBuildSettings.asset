@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WinScene.unity
     guid: e9ff8400257274f4d96d47e98bcef804
+  - enabled: 1
+    path: Assets/Scenes/MatchMakingRanked.unity
+    guid: 8a707a7b3ad4c52498deab14c21b7f67
   m_configObjects: {}

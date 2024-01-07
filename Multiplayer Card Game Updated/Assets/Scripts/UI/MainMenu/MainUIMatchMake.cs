@@ -64,6 +64,7 @@ public class MainUIMatchMake : MonoBehaviour
         }
     }
 
+    //Used to authenticate players in unity gaming services and allowes multiple instances on the same pc if in editor
     private async Task AuthenticatePlayer()
     {
         InitializationOptions initOptions = new InitializationOptions();
@@ -81,6 +82,7 @@ public class MainUIMatchMake : MonoBehaviour
 
     private async Task<Lobby> JoinLobby()
     {
+        //tries to quick join returns null if there is no open lobbys
         try
         {
             Lobby lobby = await Lobbies.Instance.QuickJoinLobbyAsync();
@@ -130,6 +132,7 @@ public class MainUIMatchMake : MonoBehaviour
         }
     }
 
+    //Pings lobby to make sure server stays open
     private static IEnumerator PingLobby(string lobbyId, float pingLobbyTime)
     {
         WaitForSecondsRealtime delay = new WaitForSecondsRealtime(pingLobbyTime);
