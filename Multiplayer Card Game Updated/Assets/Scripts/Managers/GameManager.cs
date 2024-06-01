@@ -276,6 +276,8 @@ public class GameManager : NetworkBehaviour
     public void OnClickEndTurn()
     {
         endTurnButton.interactable = false;
+        StaminaSlider slider = GameObject.FindWithTag("StamSlider").GetComponent<StaminaSlider>();
+        slider.stamina = 3;
         if (currentState == GameState.player1)
         {
             ChangeStateServerRpc(GameState.player2);

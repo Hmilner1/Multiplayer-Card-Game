@@ -512,6 +512,7 @@
 "Assets/Scripts/UI/PackManager.cs"
 "Assets/Scripts/UI/PrivateMatchMaker.cs"
 "Assets/Scripts/UI/PrivateMatchUIManager.cs"
+"Assets/Scripts/UI/StaminaSlider.cs"
 "Assets/Scripts/UI/UIAccountSection.cs"
 "Assets/Scripts/UI/UIAnimationController.cs"
 -langversion:9.0
